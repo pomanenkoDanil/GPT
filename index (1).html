@@ -1,0 +1,985 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Информационный сайт проекта: Влияние технологий ИИ на образовательный процесс" />
+  <title>Влияние технологий ИИ на образовательный процесс</title>
+  <style>
+    :root {
+      --bg: #08111f;
+      --bg-2: #0d1b31;
+      --card: rgba(255, 255, 255, 0.08);
+      --card-strong: rgba(255, 255, 255, 0.13);
+      --text: #eef6ff;
+      --muted: #b8c7da;
+      --accent: #6ae5ff;
+      --accent-2: #9d7bff;
+      --accent-3: #33e6a6;
+      --danger: #ff7474;
+      --warning: #ffd166;
+      --shadow: 0 22px 60px rgba(0, 0, 0, 0.35);
+      --radius: 26px;
+      --line: rgba(255,255,255,0.14);
+      --max: 1180px;
+    }
+
+    * { box-sizing: border-box; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      margin: 0;
+      font-family: Arial, Helvetica, sans-serif;
+      color: var(--text);
+      background:
+        radial-gradient(circle at 12% 8%, rgba(106, 229, 255, 0.23), transparent 32%),
+        radial-gradient(circle at 88% 16%, rgba(157, 123, 255, 0.28), transparent 28%),
+        radial-gradient(circle at 50% 92%, rgba(51, 230, 166, 0.12), transparent 38%),
+        linear-gradient(135deg, #07101f 0%, #0b172a 43%, #12122d 100%);
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    body.light {
+      --bg: #f5f8ff;
+      --bg-2: #eaf1ff;
+      --card: rgba(255, 255, 255, 0.72);
+      --card-strong: rgba(255, 255, 255, 0.92);
+      --text: #10192b;
+      --muted: #44566f;
+      --line: rgba(15, 25, 43, 0.12);
+      background:
+        radial-gradient(circle at 15% 10%, rgba(38, 183, 255, 0.22), transparent 32%),
+        radial-gradient(circle at 84% 12%, rgba(103, 73, 240, 0.16), transparent 28%),
+        linear-gradient(135deg, #f6f9ff 0%, #eaf3ff 48%, #f4f0ff 100%);
+    }
+
+    a { color: inherit; text-decoration: none; }
+
+    .noise {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      opacity: .08;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 240 240' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.75' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+      z-index: 0;
+    }
+
+    .page { position: relative; z-index: 1; }
+
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      border-bottom: 1px solid var(--line);
+      backdrop-filter: blur(18px);
+      background: rgba(7, 16, 31, 0.74);
+    }
+
+    body.light header { background: rgba(255, 255, 255, 0.74); }
+
+    .nav {
+      max-width: var(--max);
+      margin: 0 auto;
+      padding: 14px 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      min-width: 0;
+    }
+
+    .brand-mark {
+      width: 42px;
+      height: 42px;
+      border-radius: 14px;
+      display: grid;
+      place-items: center;
+      background: linear-gradient(135deg, var(--accent), var(--accent-2));
+      box-shadow: 0 10px 30px rgba(106, 229, 255, .25);
+      color: #06101e;
+      font-weight: 900;
+      flex: 0 0 auto;
+    }
+
+    .brand span:last-child {
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      max-width: 330px;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+    }
+
+    .nav-links a, .icon-btn {
+      border: 1px solid transparent;
+      padding: 10px 12px;
+      border-radius: 999px;
+      color: var(--muted);
+      transition: .22s ease;
+      font-size: 14px;
+      background: transparent;
+      cursor: pointer;
+    }
+
+    .nav-links a:hover, .icon-btn:hover {
+      color: var(--text);
+      border-color: var(--line);
+      background: var(--card);
+    }
+
+    .menu-btn { display: none; }
+
+    main { max-width: var(--max); margin: 0 auto; padding: 0 20px 72px; }
+
+    .hero {
+      min-height: calc(100vh - 72px);
+      display: grid;
+      grid-template-columns: 1.08fr .92fr;
+      align-items: center;
+      gap: 36px;
+      padding: 62px 0 54px;
+    }
+
+    .badge-row { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 18px; }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 12px;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      color: var(--muted);
+      background: rgba(255,255,255,.06);
+      font-size: 14px;
+      backdrop-filter: blur(8px);
+    }
+
+    body.light .badge { background: rgba(255,255,255,.68); }
+
+    h1 {
+      margin: 0;
+      font-size: clamp(36px, 6vw, 74px);
+      line-height: .98;
+      letter-spacing: -0.07em;
+    }
+
+    .gradient-text {
+      background: linear-gradient(135deg, var(--accent), #ffffff 40%, var(--accent-2));
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+
+    body.light .gradient-text {
+      background: linear-gradient(135deg, #0a93c8, #2c2c84 45%, #744af2);
+      -webkit-background-clip: text;
+      background-clip: text;
+    }
+
+    .lead {
+      margin: 22px 0 0;
+      max-width: 760px;
+      color: var(--muted);
+      font-size: clamp(17px, 2.15vw, 21px);
+      line-height: 1.65;
+    }
+
+    .hero-actions { margin-top: 30px; display: flex; gap: 14px; flex-wrap: wrap; }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      padding: 14px 20px;
+      border-radius: 16px;
+      border: 1px solid var(--line);
+      cursor: pointer;
+      font-weight: 700;
+      transition: .24s ease;
+      min-height: 50px;
+      user-select: none;
+    }
+
+    .btn.primary {
+      background: linear-gradient(135deg, var(--accent), var(--accent-2));
+      color: #06101e;
+      border: none;
+      box-shadow: 0 16px 40px rgba(106, 229, 255, .22);
+    }
+
+    .btn.secondary { background: var(--card); color: var(--text); }
+
+    .btn:hover { transform: translateY(-2px); box-shadow: var(--shadow); }
+
+    .visual-card {
+      position: relative;
+      min-height: 510px;
+      border: 1px solid var(--line);
+      border-radius: 36px;
+      overflow: hidden;
+      background: linear-gradient(145deg, rgba(255,255,255,.12), rgba(255,255,255,.04));
+      box-shadow: var(--shadow);
+      padding: 24px;
+    }
+
+    .orb {
+      position: absolute;
+      width: 260px;
+      height: 260px;
+      border-radius: 999px;
+      filter: blur(4px);
+      background: radial-gradient(circle, rgba(106,229,255,.88), rgba(157,123,255,.25) 55%, transparent 70%);
+      top: 34px;
+      right: 18px;
+      animation: float 7s ease-in-out infinite;
+    }
+
+    @keyframes float { 0%, 100% { transform: translateY(0) scale(1); } 50% { transform: translateY(18px) scale(.96); } }
+
+    .screen {
+      position: relative;
+      margin-top: 60px;
+      border: 1px solid var(--line);
+      border-radius: 26px;
+      background: rgba(2, 9, 20, .62);
+      backdrop-filter: blur(12px);
+      overflow: hidden;
+    }
+
+    body.light .screen { background: rgba(255, 255, 255, .66); }
+
+    .screen-top { display: flex; gap: 8px; padding: 14px; border-bottom: 1px solid var(--line); }
+    .dot { width: 11px; height: 11px; border-radius: 50%; background: var(--accent); opacity: .85; }
+    .dot:nth-child(2) { background: var(--warning); }
+    .dot:nth-child(3) { background: var(--danger); }
+
+    .dashboard { padding: 20px; display: grid; gap: 16px; }
+
+    .metric-row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+    .metric {
+      padding: 16px;
+      border-radius: 20px;
+      background: var(--card);
+      border: 1px solid var(--line);
+    }
+    .metric strong { display: block; font-size: 26px; }
+    .metric span { color: var(--muted); font-size: 13px; }
+
+    .ai-map {
+      height: 150px;
+      border-radius: 22px;
+      border: 1px solid var(--line);
+      background:
+        linear-gradient(90deg, rgba(106,229,255,.2), rgba(157,123,255,.18)),
+        radial-gradient(circle at 20% 35%, rgba(106,229,255,.9) 0 5px, transparent 6px),
+        radial-gradient(circle at 48% 58%, rgba(51,230,166,.9) 0 5px, transparent 6px),
+        radial-gradient(circle at 78% 28%, rgba(157,123,255,.9) 0 5px, transparent 6px),
+        linear-gradient(145deg, rgba(255,255,255,.07), rgba(255,255,255,.01));
+      position: relative;
+      overflow: hidden;
+    }
+
+    .ai-map::before, .ai-map::after {
+      content: "";
+      position: absolute;
+      inset: 25px 18px;
+      background: url("data:image/svg+xml,%3Csvg width='420' height='120' viewBox='0 0 420 120' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M35 38 C120 10, 160 100, 250 65 S340 0, 390 42' stroke='%236ae5ff' stroke-width='3' fill='none' stroke-linecap='round' opacity='.9'/%3E%3Cpath d='M35 75 C115 115, 160 45, 250 80 S335 115, 390 70' stroke='%239d7bff' stroke-width='3' fill='none' stroke-linecap='round' opacity='.85'/%3E%3C/svg%3E") center / contain no-repeat;
+    }
+
+    .ai-map::after { filter: blur(8px); opacity: .7; }
+
+    section { padding: 54px 0 0; }
+
+    .section-title {
+      display: flex;
+      justify-content: space-between;
+      gap: 22px;
+      align-items: end;
+      margin-bottom: 22px;
+    }
+
+    .eyebrow {
+      color: var(--accent);
+      text-transform: uppercase;
+      letter-spacing: .16em;
+      font-size: 12px;
+      font-weight: 800;
+      margin-bottom: 10px;
+    }
+
+    h2 {
+      margin: 0;
+      font-size: clamp(28px, 4vw, 44px);
+      line-height: 1.08;
+      letter-spacing: -0.04em;
+    }
+
+    .section-title p {
+      margin: 0;
+      color: var(--muted);
+      max-width: 520px;
+      line-height: 1.55;
+    }
+
+    .grid { display: grid; gap: 18px; }
+    .grid.cols-3 { grid-template-columns: repeat(3, 1fr); }
+    .grid.cols-2 { grid-template-columns: repeat(2, 1fr); }
+
+    .card {
+      padding: 24px;
+      border-radius: var(--radius);
+      background: var(--card);
+      border: 1px solid var(--line);
+      box-shadow: 0 10px 28px rgba(0,0,0,.12);
+      backdrop-filter: blur(12px);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .card::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, rgba(106,229,255,.12), transparent 38%, rgba(157,123,255,.10));
+      opacity: 0;
+      transition: .25s ease;
+      pointer-events: none;
+    }
+
+    .card:hover::before { opacity: 1; }
+
+    .card h3 {
+      margin: 0 0 10px;
+      font-size: 21px;
+      letter-spacing: -0.02em;
+      position: relative;
+    }
+
+    .card p, .card li {
+      color: var(--muted);
+      line-height: 1.62;
+      position: relative;
+    }
+
+    .icon {
+      width: 48px;
+      height: 48px;
+      border-radius: 16px;
+      display: grid;
+      place-items: center;
+      margin-bottom: 16px;
+      background: linear-gradient(135deg, rgba(106,229,255,.22), rgba(157,123,255,.24));
+      border: 1px solid var(--line);
+      font-size: 24px;
+      position: relative;
+    }
+
+    .timeline { display: grid; gap: 14px; }
+    .step { display: grid; grid-template-columns: 64px 1fr; gap: 16px; align-items: start; }
+    .step-num {
+      width: 54px;
+      height: 54px;
+      border-radius: 18px;
+      display: grid;
+      place-items: center;
+      font-weight: 900;
+      background: linear-gradient(135deg, var(--accent), var(--accent-2));
+      color: #06101e;
+      box-shadow: 0 14px 28px rgba(106,229,255,.18);
+    }
+
+    .risk-tags { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 16px; }
+    .tag { padding: 8px 10px; border-radius: 12px; background: var(--card-strong); color: var(--muted); border: 1px solid var(--line); font-size: 13px; }
+
+    .quiz-wrap {
+      display: grid;
+      grid-template-columns: .9fr 1.1fr;
+      gap: 20px;
+      align-items: start;
+    }
+
+    .quiz-panel { position: sticky; top: 92px; }
+
+    .progress {
+      width: 100%;
+      height: 12px;
+      background: rgba(255,255,255,.1);
+      border-radius: 999px;
+      overflow: hidden;
+      border: 1px solid var(--line);
+      margin: 16px 0 18px;
+    }
+
+    .progress-bar {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, var(--accent), var(--accent-3), var(--accent-2));
+      transition: .3s ease;
+    }
+
+    .question-card {
+      min-height: 390px;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .question-meta { color: var(--muted); margin-bottom: 10px; }
+    .question { font-size: clamp(22px, 3vw, 30px); line-height: 1.2; letter-spacing: -0.03em; margin: 0 0 20px; }
+
+    .answers { display: grid; gap: 10px; margin-top: auto; }
+    .answer {
+      width: 100%;
+      text-align: left;
+      padding: 15px 16px;
+      border-radius: 18px;
+      border: 1px solid var(--line);
+      color: var(--text);
+      background: rgba(255,255,255,.07);
+      cursor: pointer;
+      transition: .18s ease;
+      font-size: 16px;
+      line-height: 1.35;
+    }
+    body.light .answer { background: rgba(255,255,255,.84); }
+    .answer:hover { transform: translateY(-1px); border-color: rgba(106,229,255,.7); }
+    .answer.correct { background: rgba(51,230,166,.17); border-color: rgba(51,230,166,.75); }
+    .answer.wrong { background: rgba(255,116,116,.16); border-color: rgba(255,116,116,.75); }
+    .answer:disabled { cursor: not-allowed; opacity: .92; }
+
+    .explain {
+      display: none;
+      margin-top: 14px;
+      padding: 14px;
+      border-radius: 16px;
+      background: rgba(106,229,255,.11);
+      border: 1px solid var(--line);
+      color: var(--muted);
+      line-height: 1.55;
+    }
+    .explain.show { display: block; }
+
+    .quiz-actions { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 16px; }
+
+    .result-box {
+      display: none;
+      padding: 22px;
+      border-radius: 22px;
+      background: linear-gradient(135deg, rgba(51,230,166,.14), rgba(106,229,255,.10));
+      border: 1px solid var(--line);
+      margin-top: 18px;
+    }
+
+    .result-box.show { display: block; }
+    .result-box strong { font-size: 34px; display: block; margin-bottom: 6px; }
+
+    .mini-list { padding-left: 18px; margin: 12px 0 0; }
+    .mini-list li { margin-bottom: 7px; }
+
+    .implementation {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 14px;
+      margin-top: 18px;
+    }
+
+    .stat {
+      padding: 20px;
+      border-radius: 22px;
+      background: var(--card);
+      border: 1px solid var(--line);
+    }
+    .stat strong { font-size: 34px; display: block; letter-spacing: -0.05em; }
+    .stat span { color: var(--muted); line-height: 1.45; }
+
+    .footer {
+      margin-top: 70px;
+      padding: 28px;
+      border: 1px solid var(--line);
+      border-radius: 28px;
+      background: var(--card);
+      display: flex;
+      justify-content: space-between;
+      gap: 18px;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    .footer p { margin: 0; color: var(--muted); line-height: 1.5; }
+
+    @media (max-width: 980px) {
+      .hero, .quiz-wrap { grid-template-columns: 1fr; }
+      .hero { min-height: auto; padding-top: 42px; }
+      .visual-card { min-height: 430px; }
+      .grid.cols-3, .grid.cols-2 { grid-template-columns: 1fr 1fr; }
+      .implementation { grid-template-columns: repeat(2, 1fr); }
+      .quiz-panel { position: relative; top: auto; }
+    }
+
+    @media (max-width: 760px) {
+      .nav { padding: 12px 14px; }
+      .brand span:last-child { max-width: 205px; }
+      .menu-btn { display: inline-flex; }
+      .nav-links {
+        position: fixed;
+        left: 14px;
+        right: 14px;
+        top: 70px;
+        display: none;
+        flex-direction: column;
+        align-items: stretch;
+        padding: 12px;
+        border-radius: 22px;
+        border: 1px solid var(--line);
+        background: rgba(7, 16, 31, .94);
+        box-shadow: var(--shadow);
+      }
+      body.light .nav-links { background: rgba(255,255,255,.96); }
+      .nav-links.open { display: flex; }
+      .nav-links a, .nav-links button { text-align: left; width: 100%; }
+      main { padding: 0 14px 42px; }
+      .hero { gap: 22px; padding-bottom: 28px; }
+      .lead { line-height: 1.55; }
+      .visual-card { min-height: 370px; border-radius: 26px; padding: 15px; }
+      .screen { margin-top: 42px; }
+      .metric-row { grid-template-columns: 1fr; }
+      .section-title { display: block; }
+      .section-title p { margin-top: 12px; }
+      .grid.cols-3, .grid.cols-2, .implementation { grid-template-columns: 1fr; }
+      .card { padding: 20px; border-radius: 22px; }
+      .step { grid-template-columns: 48px 1fr; gap: 12px; }
+      .step-num { width: 44px; height: 44px; border-radius: 15px; }
+      .question-card { min-height: auto; }
+      .footer { align-items: flex-start; }
+    }
+
+    @media (max-width: 410px) {
+      .brand span:last-child { max-width: 168px; }
+      .hero-actions .btn { width: 100%; }
+      h1 { font-size: 34px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="noise" aria-hidden="true"></div>
+  <div class="page">
+    <header>
+      <nav class="nav" aria-label="Главное меню">
+        <a href="#top" class="brand" aria-label="На главную">
+          <span class="brand-mark">ИИ</span>
+          <span>ИИ в образовании</span>
+        </a>
+        <button class="icon-btn menu-btn" id="menuBtn" type="button" aria-label="Открыть меню">☰ Меню</button>
+        <div class="nav-links" id="navLinks">
+          <a href="#about">О проекте</a>
+          <a href="#directions">Направления</a>
+          <a href="#risks">Риски</a>
+          <a href="#product">Продукт</a>
+          <a href="#quiz">Викторина</a>
+          <button class="icon-btn" id="themeBtn" type="button">☀️ Тема</button>
+        </div>
+      </nav>
+    </header>
+
+    <main id="top">
+      <section class="hero" aria-label="Главный экран">
+        <div>
+          <div class="badge-row">
+            <span class="badge">ГБПОУ «МПК»</span>
+            <span class="badge">Индивидуальный проект</span>
+            <span class="badge">Информационно-познавательный сайт</span>
+          </div>
+          <h1>Влияние технологий <span class="gradient-text">ИИ</span> на образовательный процесс</h1>
+          <p class="lead">Сайт показывает, как искусственный интеллект меняет обучение: помогает персонализировать задания, автоматизировать проверку, поддерживать студентов и преподавателей, а также какие риски важно учитывать.</p>
+          <div class="hero-actions">
+            <a class="btn primary" href="#quiz">Пройти викторину →</a>
+            <a class="btn secondary" href="#about">Изучить проект</a>
+          </div>
+        </div>
+
+        <div class="visual-card" aria-label="Визуальный блок искусственного интеллекта">
+          <div class="orb" aria-hidden="true"></div>
+          <div class="screen">
+            <div class="screen-top"><span class="dot"></span><span class="dot"></span><span class="dot"></span></div>
+            <div class="dashboard">
+              <div class="metric-row">
+                <div class="metric"><strong>24/7</strong><span>поддержка через чат-ботов и виртуальных тьюторов</span></div>
+                <div class="metric"><strong>5</strong><span>ключевых направлений применения ИИ в учебе</span></div>
+              </div>
+              <div class="ai-map" aria-hidden="true"></div>
+              <div class="metric-row">
+                <div class="metric"><strong>91%</strong><span>респондентов считают материал полезным</span></div>
+                <div class="metric"><strong>94%</strong><span>отмечают лучшее понимание сложных тем</span></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="about">
+        <div class="section-title">
+          <div>
+            <div class="eyebrow">Смысл проекта</div>
+            <h2>Зачем изучать ИИ в образовании</h2>
+          </div>
+          <p>Тема актуальна из-за быстрого внедрения нейросетей, интеллектуальных платформ и аналитических систем в учебный процесс.</p>
+        </div>
+        <div class="grid cols-3">
+          <article class="card">
+            <div class="icon">🎯</div>
+            <h3>Цель</h3>
+            <p>Выявить и проанализировать влияние технологий искусственного интеллекта на образовательный процесс, определить основные направления применения и последствия для участников обучения.</p>
+          </article>
+          <article class="card">
+            <div class="icon">👥</div>
+            <h3>Целевая аудитория</h3>
+            <p>Студенты средних специальных учебных заведений, преподаватели и специалисты, которым важно понимать возможности и ограничения ИИ.</p>
+          </article>
+          <article class="card">
+            <div class="icon">✅</div>
+            <h3>Ожидаемый результат</h3>
+            <p>Формирование осознанного отношения к внедрению ИИ: использовать технологии эффективно, но сохранять педагогическую целесообразность и контроль человека.</p>
+          </article>
+        </div>
+      </section>
+
+      <section id="directions">
+        <div class="section-title">
+          <div>
+            <div class="eyebrow">Практика применения</div>
+            <h2>5 направлений использования ИИ</h2>
+          </div>
+          <p>ИИ в образовании не ограничивается «готовыми ответами». Он может стать инструментом обучения, анализа, поддержки и создания материалов.</p>
+        </div>
+        <div class="grid cols-2">
+          <article class="card">
+            <div class="icon">🧭</div>
+            <h3>Персонализированное обучение</h3>
+            <p>Система анализирует уровень знаний, темп работы и ошибки студента, после чего подбирает индивидуальные задания и материалы.</p>
+          </article>
+          <article class="card">
+            <div class="icon">📝</div>
+            <h3>Автоматизация оценки</h3>
+            <p>ИИ помогает проверять тесты, письменные работы и типовые задания, а преподаватель сохраняет право окончательного решения.</p>
+          </article>
+          <article class="card">
+            <div class="icon">🤖</div>
+            <h3>Виртуальные тьюторы</h3>
+            <p>Чат-боты и помощники отвечают на вопросы, объясняют сложные темы простым языком и помогают студентам вне учебного времени.</p>
+          </article>
+          <article class="card">
+            <div class="icon">📊</div>
+            <h3>Аналитика успеваемости</h3>
+            <p>Алгоритмы помогают выявлять темы, которые вызывают трудности, и заранее замечать риск снижения результатов.</p>
+          </article>
+          <article class="card">
+            <div class="icon">⚙️</div>
+            <h3>Генерация материалов</h3>
+            <p>ИИ может создавать тесты, планы занятий, презентации и примеры, но такие материалы обязательно нужно проверять.</p>
+          </article>
+          <article class="card">
+            <div class="icon">🛡️</div>
+            <h3>Подготовка специалистов по ИБ</h3>
+            <p>Для информационной безопасности ИИ полезен в симуляторах атак, анализе логов, поиске аномалий и тренировке реакции на инциденты.</p>
+          </article>
+        </div>
+      </section>
+
+      <section id="risks">
+        <div class="section-title">
+          <div>
+            <div class="eyebrow">Важная сторона темы</div>
+            <h2>Риски внедрения ИИ</h2>
+          </div>
+          <p>ИИ должен помогать образованию, а не заменять мышление студента и профессиональную роль педагога.</p>
+        </div>
+        <div class="grid cols-3">
+          <article class="card">
+            <h3>Социальные</h3>
+            <p>Разный доступ к устройствам и интернету может усилить цифровое неравенство между студентами и образовательными организациями.</p>
+            <div class="risk-tags"><span class="tag">доступ</span><span class="tag">неравенство</span><span class="tag">инфраструктура</span></div>
+          </article>
+          <article class="card">
+            <h3>Этические</h3>
+            <p>ИИ обрабатывает данные учащихся, поэтому важны конфиденциальность, прозрачность алгоритмов и защита персональной информации.</p>
+            <div class="risk-tags"><span class="tag">данные</span><span class="tag">приватность</span><span class="tag">предвзятость</span></div>
+          </article>
+          <article class="card">
+            <h3>Педагогические</h3>
+            <p>Нельзя полностью перекладывать обучение и оценивание на алгоритмы: учитель остается наставником, организатором и экспертом.</p>
+            <div class="risk-tags"><span class="tag">роль учителя</span><span class="tag">контроль</span><span class="tag">мышление</span></div>
+          </article>
+        </div>
+      </section>
+
+      <section id="product">
+        <div class="section-title">
+          <div>
+            <div class="eyebrow">Проектный продукт</div>
+            <h2>Информационный сайт</h2>
+          </div>
+          <p>Сайт создан как наглядный продукт проекта: он кратко объясняет теорию, показывает примеры применения и проверяет знания через викторину.</p>
+        </div>
+        <div class="card">
+          <div class="timeline">
+            <div class="step">
+              <div class="step-num">1</div>
+              <div><h3>Изучение темы</h3><p>Посетитель знакомится с определением ИИ, историей развития и основными направлениями применения в учебном процессе.</p></div>
+            </div>
+            <div class="step">
+              <div class="step-num">2</div>
+              <div><h3>Понимание пользы</h3><p>Карточки сайта показывают, как ИИ помогает студентам, преподавателям и образовательной организации.</p></div>
+            </div>
+            <div class="step">
+              <div class="step-num">3</div>
+              <div><h3>Осмысление рисков</h3><p>Отдельный блок объясняет, почему ИИ нужно внедрять ответственно: с защитой данных и сохранением роли педагога.</p></div>
+            </div>
+            <div class="step">
+              <div class="step-num">4</div>
+              <div><h3>Самопроверка</h3><p>Интерактивная викторина помогает закрепить материал и сразу показывает результат.</p></div>
+            </div>
+          </div>
+        </div>
+        <div class="implementation" aria-label="Результаты распространения">
+          <div class="stat"><strong>40</strong><span>студентов участвовали в опросе</span></div>
+          <div class="stat"><strong>91%</strong><span>назвали материал понятным и полезным</span></div>
+          <div class="stat"><strong>78%</strong><span>хотели бы похожие материалы по другим темам ИБ</span></div>
+          <div class="stat"><strong>94%</strong><span>лучше поняли сложные цифровые концепции</span></div>
+        </div>
+      </section>
+
+      <section id="quiz">
+        <div class="section-title">
+          <div>
+            <div class="eyebrow">Проверь себя</div>
+            <h2>Викторина по теме проекта</h2>
+          </div>
+          <p>Ответь на вопросы. После каждого ответа появится пояснение, а в конце — итоговый результат.</p>
+        </div>
+        <div class="quiz-wrap">
+          <aside class="card quiz-panel">
+            <h3>Как проходить</h3>
+            <p>Выбери один вариант ответа. После ответа нажми «Следующий вопрос». Результат можно пройти заново.</p>
+            <div class="progress" aria-label="Прогресс викторины"><div class="progress-bar" id="progressBar"></div></div>
+            <p id="scoreMini">Счёт: 0 из 0</p>
+            <div class="result-box" id="resultBox">
+              <strong id="resultScore">0/0</strong>
+              <p id="resultText"></p>
+            </div>
+          </aside>
+          <div class="card question-card">
+            <div class="question-meta" id="questionMeta">Вопрос 1</div>
+            <h3 class="question" id="questionText">Загрузка вопроса...</h3>
+            <div class="answers" id="answers"></div>
+            <div class="explain" id="explain"></div>
+            <div class="quiz-actions">
+              <button class="btn primary" id="nextBtn" type="button">Следующий вопрос</button>
+              <button class="btn secondary" id="restartBtn" type="button">Начать заново</button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <div class="footer">
+        <div>
+          <strong>Проект: «Влияние технологий ИИ на образовательный процесс»</strong>
+          <p>Автор: Романенко Данил Юрьевич • Группа ИБ-11 • Магнитогорск, 2026</p>
+        </div>
+        <a class="btn secondary" href="#top">Наверх ↑</a>
+      </div>
+    </main>
+  </div>
+
+  <script>
+    const navLinks = document.getElementById('navLinks');
+    const menuBtn = document.getElementById('menuBtn');
+    const themeBtn = document.getElementById('themeBtn');
+
+    menuBtn.addEventListener('click', () => navLinks.classList.toggle('open'));
+    navLinks.querySelectorAll('a').forEach(link => link.addEventListener('click', () => navLinks.classList.remove('open')));
+
+    const savedTheme = localStorage.getItem('aiEduTheme');
+    if (savedTheme === 'light') document.body.classList.add('light');
+
+    themeBtn.addEventListener('click', () => {
+      document.body.classList.toggle('light');
+      localStorage.setItem('aiEduTheme', document.body.classList.contains('light') ? 'light' : 'dark');
+    });
+
+    const questions = [
+      {
+        text: 'Что означает персонализированное обучение с использованием ИИ?',
+        answers: ['Одинаковые задания для всех студентов', 'Подбор материалов под уровень и темп конкретного учащегося', 'Полная замена преподавателя программой', 'Отказ от контроля знаний'],
+        correct: 1,
+        explain: 'Персонализация означает адаптацию заданий, темпа и материалов под индивидуальные трудности и уровень знаний учащегося.'
+      },
+      {
+        text: 'Почему нельзя полностью доверять ИИ при оценке работ?',
+        answers: ['ИИ всегда слишком строгий', 'ИИ не умеет считать баллы', 'Алгоритм может не понять контекст, творческий подход и глубину мысли', 'Проверка ИИ занимает больше времени, чем ручная'],
+        correct: 2,
+        explain: 'ИИ полезен для первичной проверки, но окончательное решение должен принимать преподаватель, особенно в сложных и творческих работах.'
+      },
+      {
+        text: 'Какой риск связан со сбором данных об учащихся?',
+        answers: ['Повышение скорости интернета', 'Появление новых учебников', 'Нарушение конфиденциальности и неправильная обработка персональных данных', 'Уменьшение числа предметов'],
+        correct: 2,
+        explain: 'Образовательные ИИ-системы могут обрабатывать данные учащихся, поэтому важны безопасность, прозрачность и законность обработки информации.'
+      },
+      {
+        text: 'Какая роль остается за преподавателем при внедрении ИИ?',
+        answers: ['Только включать компьютер', 'Наставник, организатор обучения и эксперт, который контролирует применение технологий', 'Полностью отказаться от объяснения тем', 'Заменить все занятия тестами'],
+        correct: 1,
+        explain: 'ИИ помогает, но не заменяет педагога в воспитании, мотивации, развитии критического мышления и принятии профессиональных решений.'
+      },
+      {
+        text: 'Что относится к направлению “аналитика успеваемости”?',
+        answers: ['Прогнозирование трудностей и выявление тем, которые вызывают проблемы', 'Украшение презентаций', 'Удаление домашних заданий', 'Запрет самостоятельной работы'],
+        correct: 0,
+        explain: 'Аналитика помогает заранее увидеть, где студенту нужна поддержка, и скорректировать учебный процесс.'
+      },
+      {
+        text: 'Как ИИ может быть полезен студентам специальности “Информационная безопасность”?',
+        answers: ['Только для рисования картинок', 'Для моделирования атак, анализа логов, поиска аномалий и тренировки реакции на инциденты', 'Для отмены лабораторных работ', 'Для автоматической сдачи экзаменов вместо студента'],
+        correct: 1,
+        explain: 'В ИБ ИИ особенно полезен в тренажерах, виртуальных полигонах, обнаружении аномалий и анализе угроз.'
+      },
+      {
+        text: 'Что такое цифровое неравенство в контексте ИИ-образования?',
+        answers: ['Разница в доступе к устройствам, интернету и цифровым сервисам', 'Одинаковое количество уроков у всех', 'Высокая скорость печати', 'Использование бумажных учебников'],
+        correct: 0,
+        explain: 'Если часть учащихся не имеет доступа к нужным устройствам и интернету, ИИ может усилить образовательное неравенство.'
+      },
+      {
+        text: 'Как правильно использовать материалы, созданные ИИ?',
+        answers: ['Сразу сдавать без проверки', 'Проверять факты, исправлять ошибки и адаптировать под учебную цель', 'Удалять все источники', 'Использовать только для развлечения'],
+        correct: 1,
+        explain: 'ИИ может ошибаться, поэтому материалы нужно проверять, редактировать и использовать как вспомогательный инструмент.'
+      },
+      {
+        text: 'Какая главная идея ответственного внедрения ИИ в образование?',
+        answers: ['Быстро заменить все уроки алгоритмами', 'Использовать ИИ осознанно: с пользой для обучения, защитой данных и контролем человека', 'Запретить любые цифровые инструменты', 'Сделать обучение полностью автоматическим'],
+        correct: 1,
+        explain: 'Ответственное внедрение предполагает баланс: ИИ повышает эффективность, но человек сохраняет контроль и педагогическую цель.'
+      },
+      {
+        text: 'Зачем в проектный сайт добавлена викторина?',
+        answers: ['Чтобы заменить всю исследовательскую часть', 'Чтобы проверить понимание темы и закрепить основные выводы проекта', 'Чтобы убрать текстовые разделы', 'Чтобы усложнить открытие сайта на телефоне'],
+        correct: 1,
+        explain: 'Викторина делает сайт интерактивным продуктом: посетитель не только читает, но и проверяет, насколько понял материал.'
+      }
+    ];
+
+    let index = 0;
+    let score = 0;
+    let answered = false;
+
+    const questionMeta = document.getElementById('questionMeta');
+    const questionText = document.getElementById('questionText');
+    const answersEl = document.getElementById('answers');
+    const explainEl = document.getElementById('explain');
+    const nextBtn = document.getElementById('nextBtn');
+    const restartBtn = document.getElementById('restartBtn');
+    const progressBar = document.getElementById('progressBar');
+    const scoreMini = document.getElementById('scoreMini');
+    const resultBox = document.getElementById('resultBox');
+    const resultScore = document.getElementById('resultScore');
+    const resultText = document.getElementById('resultText');
+
+    function renderQuestion() {
+      const q = questions[index];
+      answered = false;
+      questionMeta.textContent = `Вопрос ${index + 1} из ${questions.length}`;
+      questionText.textContent = q.text;
+      answersEl.innerHTML = '';
+      explainEl.textContent = '';
+      explainEl.classList.remove('show');
+      nextBtn.textContent = index === questions.length - 1 ? 'Показать результат' : 'Следующий вопрос';
+      nextBtn.disabled = true;
+      q.answers.forEach((answer, i) => {
+        const btn = document.createElement('button');
+        btn.className = 'answer';
+        btn.type = 'button';
+        btn.textContent = answer;
+        btn.addEventListener('click', () => chooseAnswer(i));
+        answersEl.appendChild(btn);
+      });
+      updateProgress();
+    }
+
+    function chooseAnswer(choice) {
+      if (answered) return;
+      answered = true;
+      const q = questions[index];
+      const buttons = answersEl.querySelectorAll('.answer');
+      buttons.forEach((btn, i) => {
+        btn.disabled = true;
+        if (i === q.correct) btn.classList.add('correct');
+        if (i === choice && i !== q.correct) btn.classList.add('wrong');
+      });
+      if (choice === q.correct) score++;
+      explainEl.textContent = q.explain;
+      explainEl.classList.add('show');
+      nextBtn.disabled = false;
+      updateProgress();
+    }
+
+    function updateProgress() {
+      const answeredCount = answered ? index + 1 : index;
+      const percent = Math.round((answeredCount / questions.length) * 100);
+      progressBar.style.width = `${percent}%`;
+      scoreMini.textContent = `Счёт: ${score} из ${questions.length}`;
+    }
+
+    function showResult() {
+      questionMeta.textContent = 'Викторина завершена';
+      questionText.textContent = 'Твой результат готов';
+      answersEl.innerHTML = '';
+      explainEl.classList.remove('show');
+      progressBar.style.width = '100%';
+      resultBox.classList.add('show');
+      resultScore.textContent = `${score}/${questions.length}`;
+      let text;
+      if (score >= 9) text = 'Отлично! Ты хорошо понимаешь, как ИИ влияет на образовательный процесс.';
+      else if (score >= 6) text = 'Хороший результат. Основная идея понятна, но некоторые риски и направления лучше повторить.';
+      else text = 'Нужно повторить материал сайта, особенно блоки про риски, роль преподавателя и применение ИИ.';
+      resultText.textContent = text;
+      nextBtn.disabled = true;
+    }
+
+    nextBtn.addEventListener('click', () => {
+      if (!answered) return;
+      if (index < questions.length - 1) {
+        index++;
+        renderQuestion();
+      } else {
+        showResult();
+      }
+    });
+
+    restartBtn.addEventListener('click', () => {
+      index = 0;
+      score = 0;
+      answered = false;
+      resultBox.classList.remove('show');
+      renderQuestion();
+    });
+
+    renderQuestion();
+  </script>
+</body>
+</html>
